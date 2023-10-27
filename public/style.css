@@ -40,7 +40,7 @@
 }
 
 #form>button {
-  background: #333;
+  background: #344662;
   border: none;
   padding: 0 1rem;
   margin: 0.25rem;
@@ -60,7 +60,7 @@
 }
 
 #messages>li:nth-child(odd) {
-  background: #efefef;
+  background: #353535;
 }
 
 #count{
