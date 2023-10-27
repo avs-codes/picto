@@ -1,4 +1,4 @@
-const socket = io();
+const socket = io('https://picto.onrender.com');
 
 const messages = document.getElementById('messages');
 const form = document.getElementById('form');
