@@ -17,7 +17,7 @@ const userMap = new Map();
 
 const { sin, cos, sqrt, atan2 } = Math;
 // Maximum distance between users in kilometers
-const proximityThreshold = 30
+const proximityThreshold = 1;
 
 function radians(degrees) {
   return degrees * Math.PI / 180;
