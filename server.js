@@ -1,14 +1,16 @@
 import 'dotenv/config'
 import express from 'express';
 import { Server } from 'socket.io';
-import http from 'http';
+import { createServer } from 'http';
 import User from './model.js';
 import uniqid from 'uniqid';
 import mongoose from 'mongoose';
+import { fileURLToPath } from 'url';
+import path from 'path';
 
-console.log(process.env.MONGODB_KEY);
+const PORT = process.env.PORT || 3000;
 const app = express();
-const server = http.createServer(app);
+const server = createServer(app);
 
 const io = new Server(server);
 const userMap = new Map();
@@ -46,8 +48,6 @@ mongoose.set('strictQuery', false);
 const connectionParams = {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  connectTimeoutMS: 30000,
-  socketTimeoutMS: 30000,
 }
 const mongoURI = process.env.MONGODB_KEY;
 
@@ -59,13 +59,14 @@ mongoose.connect(mongoURI, connectionParams)
     console.error(`Error connecting to the database. n${err}`);
   });
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const testURL = new URL('index.html', import.meta.url).pathname;
+app.use(express.static(path.join(__dirname, '/public')));
 
-app.use(express.static(('assets')))
-app.get('/', (req, res) => {
-  res.sendFile(testURL.slice(3));
-});
+// app.get('/', (req, res) => {
+//  res.sendFile(testURL.slice(3));
+// }); 
 
 io.on('connection', (socket) => {
   socket.on('location', async (location) => {
@@ -134,13 +135,12 @@ io.on('connection', (socket) => {
 
   // This connection is not being used???
   socket.on('new user', (user) => {
-    console.log('got new user signal');
-    console.log('new user:')
-    console.log(user);
+    // console.log('got new user signal');
+    // console.log('new user:')
+    // console.log(user);
     // io.emit('new user', user);
     // since server is not receiving any roomId its not executing the below code
     io.to(user.room).emit('count', userMap.size)
-    console.log('hello');
     io.to(user.room).emit('new user', user);
   })
 
