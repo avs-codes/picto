@@ -139,6 +139,9 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
+  #messages>li:nth-child(odd) {
+    background: #e3e3e3;
+  }
   a:hover {
     color: #747bff;
   }
